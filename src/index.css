@@ -1,0 +1,229 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+html {
+    box-sizing: border-box;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+
+#root {
+    font-size: 1em;
+    font-family: 'Averia Serif Libre', cursive;
+    background-size: cover;
+    text-align: center;
+    background-color: #212121;
+    width: 100vw;
+    height: 100vh;
+    color: #dadada;
+    padding: 10px;
+}
+
+.app-name {
+    font-size: 1.5rem;
+    margin: 10px 0;
+    color: #dadada;
+}
+
+.control-panel {
+    background-color: #424242;
+    color: #fff;
+    margin: 20px 0;
+    padding: 10px;
+    text-align: left;
+}
+
+.control-panel label {
+    font-size: 1rem;
+    opacity: .5;
+}
+
+.control-panel .commands {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: 20px;
+    margin-top: 20px;
+}
+
+.control-panel button {
+    font-family: 'Averia Serif Libre', cursive;
+    font-size: 1rem;
+    background-color: #BF360C;
+    color: #FFCCBC;
+    border-radius: 2px;
+    border: none;
+    padding: 5px 0;
+}
+
+.control-panel button.cta {
+    background-color: #33691E;
+    color: #DCEDC8;
+}
+
+.control-panel input[type="text"] {
+    border: 0;
+    padding: 5px;
+    background-color: #212121;
+    color: #6d6d6d;
+    font-size: 1rem;
+    letter-spacing: 2pt;
+    font-family: 'Averia Serif Libre', cursive;
+}
+
+
+.mars {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-column-gap: 1px;
+    grid-row-gap: 1px;
+    list-style: none;
+    max-width: 350px;
+    margin: 40px auto;
+    padding: 0;
+}
+
+.cell {
+    position: relative;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    background-color: #263238;
+    transition: background .2s;
+    min-height: 70px;
+}
+
+.cell.path {
+    background-color: #90A4AE;
+}
+
+.cell label {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    color: #cdcdcd;
+    opacity: .6;
+}
+
+.cell.path label {
+    opacity: 1;
+    color: #9d9d9d;
+}
+
+.cell .icon {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    font-style: normal;
+    font-size: 1.5rem;
+    z-index: 0;
+}
+
+.rover {
+    font-size: 3rem;
+    transition: all .1s;
+    color: #FAFAFA;
+    z-index: 1;
+}
+
+.rover.S {
+    transform: rotate(180deg);
+}
+
+.rover.W {
+    transform: rotate(270deg);
+}
+
+.rover.N {
+    transform: rotate(0deg);
+}
+
+.rover.E {
+    transform: rotate(90deg);
+}
+
+.rover.ghost {
+    opacity: .2;
+}
+
+@media (min-width: 510px) {
+    .mars {
+        max-width: 510px;
+        width: 510px;
+    }
+
+    .cell {
+        width: 100px;
+        height: 100px;
+    }
+
+    h1 {
+        margin-bottom: 100px;
+    }
+}
+
+
+.execution {
+    display: grid;
+    grid-template-columns: .5fr 3fr 1fr;
+    grid-column-gap: 10px;
+    margin-top: 40px;
+}
+
+button.secondary {
+    font-size: .8rem;
+    background: none;
+}
