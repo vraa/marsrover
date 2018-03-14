@@ -73,6 +73,11 @@ html {
     padding: 10px;
 }
 
+.app {
+    max-width: 600px;
+    margin: 20px auto;
+}
+
 .app-name {
     font-size: 1.5rem;
     margin: 10px 0;
@@ -152,24 +157,26 @@ html {
 
 .cell label {
     position: absolute;
-    top: 15px;
-    left: 15px;
-    color: #cdcdcd;
-    opacity: .6;
+    top: 7px;
+    left: 7px;
+    color: #fff;
+    opacity: .1;
+    font-size: .8rem;
 }
 
 .cell.path label {
     opacity: 1;
     color: #9d9d9d;
 }
+.cell.end {
+    background-color: #4CAF50;
+}
+.cell.error {
+    background-color: #f44336;
+}
 
-.cell .icon {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    font-style: normal;
-    font-size: 1.5rem;
-    z-index: 0;
+.cell.end label, .cell.error label {
+    opacity: 1;
 }
 
 .rover {

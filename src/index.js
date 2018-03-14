@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "react-dom";
+import {render} from "react-dom";
 import "./index.css";
 import Rover from "./rover";
 
@@ -24,52 +24,69 @@ const RIGHT_TURNS_MAP = {
     W: "N"
 };
 
+
 class Mars extends React.Component {
 
-    state = {
+    initialState = {
         start: null,
         end: null,
         ops: [],
-        position: "",
-        facing: "",
-        path: {}
+        position: "0-0",
+        facing: "N",
+        path: null,
+        error: null,
     };
 
+    state = Object.assign({}, this.initialState);
+
     componentDidMount() {
-        this.process(this.props);
+        this.reset(() => {
+            this.process(this.props);
+        });
     }
 
     componentWillReceiveProps(nextProps) {
-        this.process(nextProps);
+        this.reset(() => {
+            this.process(nextProps);
+        });
     }
 
+    reset = (cb) => {
+        this.setState(this.initialState, cb);
+    };
+
     process = (props) => {
-        const { commands, position, execute } = props;
-        const parts = position.split(" ");
-        this.setState(
-            {
-                start: parts[0] + "-" + parts[1],
-                position: parts[0] + "-" + parts[1],
-                facing: parts[2]
-            },
-            () => {
-                if (props.execute) {
-                    this.execute(commands);
+        const {commands, position} = props;
+        if (commands === '') {
+            this.setState(this.initialState);
+        } else {
+            const parts = position.split(" ");
+            this.setState(
+                {
+                    start: parts[0] + "-" + parts[1],
+                    position: parts[0] + "-" + parts[1],
+                    facing: parts[2]
+                },
+                () => {
+                    if (props.execute) {
+                        this.execute(commands);
+                    }
                 }
-            }
-        );
+            );
+        }
     };
 
     execute = (commands) => {
         let ops = (commands || "").split("");
-        this.setState({ ops }, () => {
+        this.setState({ops}, () => {
             setTimeout(this.run.bind(this), 500);
         });
     };
 
     run = () => {
         let ops = this.state.ops.slice();
-        let { position, path, facing } = this.state;
+        let {position, path, facing} = this.state;
+        path = path || {};
         path[position] = facing;
         let op = ops.shift();
         let newPosition = {};
@@ -84,7 +101,8 @@ class Mars extends React.Component {
         }
         if (newPosition.error) {
             alert('Can not move beyond the boundaries of Mars');
-        } this.setState(Object.assign(this.state, {
+        }
+        this.setState(Object.assign(this.state, {
             ops,
             path,
             ...newPosition
@@ -98,40 +116,42 @@ class Mars extends React.Component {
             }
         })
 
-    }
+    };
 
     moveRoverForward = () => {
-        const { size } = this.props;
-        const { position, facing } = this.state;
+        const {size} = this.props;
+        const {position, facing} = this.state;
         const moveVector = MOVE_VECTOR[facing];
         const pos = position.split('-').map(Number);
         const x = pos[0] + moveVector[0];
         const y = pos[1] + moveVector[1];
         if (x < 0 || x >= size || y < 0 || y >= size) {
-            return { error: true };
+            return {error: true};
         }
         return {
             position: x + '-' + y
         };
-    }
+    };
 
     turnRoverLeft = () => {
-        const { facing } = this.state;
+        const {facing} = this.state;
         return ({
             facing: LEFT_TURNS_MAP[facing]
         });
-    }
+    };
 
     turnRoverRight = () => {
-        const { facing } = this.state;
+        const {facing} = this.state;
         return ({
             facing: RIGHT_TURNS_MAP[facing]
         });
-    }
+    };
 
     render() {
-        const { size } = this.props;
-        let { position, facing, path } = this.state;
+
+        const {size} = this.props;
+        let {position, facing, path} = this.state;
+        path = path || {};
         let cells = [];
         for (let i = size - 1; i >= 0; i--) {
             for (let j = 0; j < size; j++) {
@@ -141,26 +161,31 @@ class Mars extends React.Component {
         return (
             <ul className="mars">
                 {cells.map(cell => {
+
                     let roverElm = null;
                     let roverPath = null;
-                    let cellIcon = null;
+                    let cellStatus = '';
+
                     if (this.state.error && this.state.end === cell) {
-                        cellIcon = <i className='icon error'>🛑</i>;
-                    } else if (this.state.start === cell) {
-                        cellIcon = <i className='icon start'>🚩</i>;
-                    } else if (this.state.end === cell) {
-                        cellIcon = <i className='icon end'>🎌</i>;
+                        cellStatus = 'error';
                     }
+                    if (this.state.start === cell) {
+                        cellStatus += ' start';
+                    }
+                    if (this.state.end === cell) {
+                        cellStatus += ' end';
+                    }
+
                     if (position === cell) {
-                        roverElm = <Rover facing={facing} />;
+                        roverElm = <Rover facing={facing}/>;
                     } else {
-                        roverPath = (path[cell] ? <Rover facing={path[cell]} ghost={true} /> : null);
+                        roverPath = (path[cell] ? <Rover facing={path[cell]} ghost={true}/> : null);
                     }
+
                     return (
-                        <li className={`cell ${!!path[cell] ? 'path' : ''}`} key={cell}>
+                        <li className={`cell ${!!path[cell] ? 'path' : ''} ${cellStatus}`} key={cell}>
                             <label>{cell}</label>
                             {roverElm || roverPath}
-                            {cellIcon}
                         </li>
                     );
                 })}
@@ -173,42 +198,45 @@ class App extends React.Component {
 
     state = {
         commands: '',
+        commandsToExecute: '',
         execute: false
-    }
+    };
 
     addCommand = (e) => {
         this.setState({
             commands: this.state.commands + e.target.value
         })
-    }
+    };
 
     execute = () => {
         this.setState({
-            execute: true
+            execute: true,
+            commandsToExecute: this.state.commands
         });
-    }
+    };
 
     clear = () => {
         this.setState({
             commands: '',
-            execute: false
-        })
-    }
+            execute: false,
+            commandsToExecute: ''
+        });
+    };
 
     render() {
         return (
-            <div>
+            <div className={'app'}>
                 <h1 className={'app-name'}>Mars Rover in JavaScript / React</h1>
                 <div className='control-panel'>
                     <label>Build Commands</label>
                     <div className='commands'>
+                        <button value='M' onClick={this.addCommand}>Move</button>
                         <button value='L' onClick={this.addCommand}>Left</button>
                         <button value='R' onClick={this.addCommand}>Right</button>
-                        <button value='M' onClick={this.addCommand}>Move</button>
                     </div>
                     <div className='execution'>
                         <button onClick={this.clear} className='secondary'>✖</button>
-                        <input type="text" readOnly value={this.state.commands} />
+                        <input type="text" readOnly value={this.state.commands}/>
                         <button className={'cta'} onClick={this.execute}>Execute</button>
                     </div>
 
@@ -216,7 +244,7 @@ class App extends React.Component {
                 <Mars
                     size={5}
                     position={"0 0 N"}
-                    commands={this.state.commands}
+                    commands={this.state.commandsToExecute}
                     execute={this.state.execute}
                 />
             </div>
@@ -224,4 +252,4 @@ class App extends React.Component {
     }
 }
 
-render(<App />, document.getElementById("root"));
+render(<App/>, document.getElementById("root"));
