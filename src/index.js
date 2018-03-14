@@ -199,7 +199,8 @@ class App extends React.Component {
     state = {
         commands: '',
         commandsToExecute: '',
-        execute: false
+        execute: false,
+        startPosition: '00N'
     };
 
     addCommand = (e) => {
@@ -215,10 +216,17 @@ class App extends React.Component {
     };
 
     execute = () => {
-        this.setState({
-            execute: true,
-            commandsToExecute: this.state.commands
-        });
+        let startPosition = this.startInput.value;
+        if (/^[0-4][0-4][NEWS]$/.test(startPosition)) {
+            this.setState({
+                execute: true,
+                commandsToExecute: this.state.commands,
+                startPosition
+            });
+        } else {
+            alert('Invalid start position.');
+        }
+
     };
 
     clear = () => {
@@ -234,6 +242,8 @@ class App extends React.Component {
     };
 
     render() {
+        let position = this.state.startPosition || '00N';
+        position = position.split('').join(' ');
         return (
             <div className={'app'}>
                 <h1 className={'app-name'}>Mars Rover in JavaScript / React</h1>
@@ -252,6 +262,7 @@ class App extends React.Component {
                                pattern={'^[0-4][0-4][NEWS]$'}
                                defaultValue={'00N'}
                                onBlur={this.validateStartPosition}
+                               ref={(elm)=>{this.startInput = elm}}
                         />
                     </div>
                     <div className='commands'>
@@ -278,7 +289,7 @@ class App extends React.Component {
                 </div>
                 <Mars
                     size={5}
-                    position={"0 0 N"}
+                    position={position}
                     commands={this.state.commandsToExecute}
                     execute={this.state.execute}
                 />
