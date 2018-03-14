@@ -229,13 +229,31 @@ class App extends React.Component {
         });
     };
 
+    validateStartPosition = (e) => {
+        e.target.checkValidity();
+    };
+
     render() {
         return (
             <div className={'app'}>
                 <h1 className={'app-name'}>Mars Rover in JavaScript / React</h1>
                 <a className={'source'} href={'https://github.com/vraa/marsrover'} title={'Source code for Mars Rover in JavaScript / React'}>Source</a>
                 <div className='control-panel'>
-                    <label>Build Commands</label>
+                    <div className={'start-position'}>
+                        <label
+                            htmlFor="startPosition"
+                        >
+                            Start Position (Eg; 00N):
+                        </label>
+                        <input type="text"
+                               id="startPosition"
+                               maxLength={3}
+                               required
+                               pattern={'^[0-4][0-4][NEWS]$'}
+                               defaultValue={'00N'}
+                               onBlur={this.validateStartPosition}
+                        />
+                    </div>
                     <div className='commands'>
                         <button value='M' onClick={this.addCommand}>Move</button>
                         <button value='L' onClick={this.addCommand}>Left</button>
