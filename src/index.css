@@ -56,10 +56,10 @@ table {
 html {
     box-sizing: border-box;
 }
+
 *, *:before, *:after {
     box-sizing: inherit;
 }
-
 
 #root {
     font-size: 1em;
@@ -140,7 +140,6 @@ html {
     font-family: 'Averia Serif Libre', cursive;
 }
 
-
 .mars {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
@@ -174,7 +173,7 @@ html {
     font-size: .8rem;
 }
 
-.cell.path:after {
+.cell.path:before {
     position: absolute;
     display: block;
     content: '';
@@ -182,15 +181,21 @@ html {
     height: 100%;
     background-color: #37474F;
     animation: zoomIn .2s;
+    z-index: 0;
 }
 
 .cell.path label {
-    opacity: 1;
-    color: #9d9d9d;
+    color: #fff;
 }
+
+.cell.end:before {
+    display: none;
+}
+
 .cell.end {
     background-color: #4CAF50;
 }
+
 .cell.error {
     background-color: #f44336;
 }
@@ -241,7 +246,6 @@ html {
         margin-bottom: 100px;
     }
 }
-
 
 .execution {
     display: grid;
