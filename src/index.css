@@ -251,7 +251,39 @@ html {
     display: grid;
     grid-template-columns: .5fr 3fr 1fr;
     grid-column-gap: 10px;
-    margin-top: 40px;
+    margin-top: 20px;
+}
+
+.samples {
+    display: flex;
+    margin-top: 10px;
+    align-items: center;
+}
+
+.samples ul {
+    margin-left: 20px;
+}
+
+.samples button {
+    background: none;
+    border-bottom: 1px solid;
+    cursor: pointer;
+    font-size: .8rem;
+    padding: 2px;
+}
+
+.samples ul li {
+    display: inline;
+    margin-right: 10px;
+}
+
+.samples ul li:after {
+    content: ",";
+    display: inline-block;
+}
+
+.samples ul li:last-child:after {
+    display: none;
 }
 
 button.secondary {

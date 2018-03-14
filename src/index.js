@@ -208,6 +208,12 @@ class App extends React.Component {
         })
     };
 
+    runSample = (e) => {
+        this.setState({
+            commands: e.target.value
+        });
+    };
+
     execute = () => {
         this.setState({
             execute: true,
@@ -239,7 +245,17 @@ class App extends React.Component {
                         <input type="text" readOnly value={this.state.commands}/>
                         <button className={'cta'} onClick={this.execute}>Execute</button>
                     </div>
-
+                    <div className='samples'>
+                        <label>Sample: </label>
+                        <ul>
+                            <li>
+                                <button value={'MMRMMLMMRM'} onClick={this.runSample}>MMRMMLMMRM</button>
+                            </li>
+                            <li>
+                                <button value={'RMMMLMRMLM'} onClick={this.runSample}>RMMMLMRMLM</button>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <Mars
                     size={5}
