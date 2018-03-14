@@ -50,14 +50,21 @@ class App extends React.Component {
         e.target.checkValidity();
     };
 
+    stopExecute = () => {
+        this.setState({
+            execute: false
+        });
+    };
+
     render() {
         let position = this.state.startPosition || '00N';
         position = position.split('').join(' ');
         return (
             <div className={'app'}>
                 <h1 className={'app-name'}>Mars Rover in JavaScript / React</h1>
-                <a className={'source'} href={'https://github.com/vraa/marsrover'} title={'Source code for Mars Rover in JavaScript / React'}>Source</a>
-                <div className='control-panel'>
+                <a className={'source'} href={'https://github.com/vraa/marsrover'}
+                   title={'Source code for Mars Rover in JavaScript / React'}>Source</a>
+                <div className={`control-panel`}>
                     <div className={'start-position'}>
                         <label
                             htmlFor="startPosition"
@@ -71,7 +78,9 @@ class App extends React.Component {
                                pattern={'^[0-4][0-4][NEWS]$'}
                                defaultValue={'00N'}
                                onBlur={this.validateStartPosition}
-                               ref={(elm)=>{this.startInput = elm}}
+                               ref={(elm) => {
+                                   this.startInput = elm
+                               }}
                         />
                     </div>
                     <div className='commands'>
@@ -101,6 +110,7 @@ class App extends React.Component {
                     position={position}
                     commands={this.state.commandsToExecute}
                     execute={this.state.execute}
+                    onDone={this.stopExecute}
                 />
             </div>
         )
